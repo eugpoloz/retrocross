@@ -1,0 +1,80 @@
+<!-- ТЕМАТИКА НЕДЕЛИ -->
+<div class="week-theme">
+<img src="http://co.forum4.ru/files/0017/8b/2e/50069.png">
+</div>
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=124#p8873" class="week-theme-link"></a>
+
+
+<!-- БЛОК НОВОСТЕЙ -->
+<div class="newsletter">
+
+<!-- Новость 1 -->
+<div class="news1" style="background: url(http://savepic.ru/12125606.gif);">
+  <a href="http://retrocross.rusff.ru/viewtopic.php?id=7#p10352" class="news-inner">
+Голосводка <br>о реформах от 25.10
+  </a>
+</div>
+
+<!-- Новость 2 -->
+<div class="news2" style="background: url(http://i.imgur.com/yK8hsnX.png);">
+  <a href="http://retrocross.rusff.ru/viewtopic.php?id=313#p7458" class="news-inner">
+Опросник:<br>что будем слушать?
+  </a>
+</div>
+
+<!-- Новость 3 -->
+<div class="news3" style="background: url(http://i.imgur.com/fXC0C1h.png);">
+  <a href="http://retrocross.rusff.ru/viewtopic.php?id=229#p7325" class="news-inner">
+Чистка профилей<br>от 06.07
+</a>
+</div>
+
+</div>
+
+
+<!-- Блок баннеров -->
+<div class="bestfriends">
+  <div class="inner">
+  <!-- Сюда загружаются баннеры -->
+  </div>
+  <div class="button"><a href="" class="js-bestfriends-button">Баннеры</a></div>
+</div>
+
+
+<!-- Блок цитаты -->
+<div class="bestquote">
+  <div class="inner">
+
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=351#p9428"><span style="color:black;">Люмия пишет:</span></a>
+<br>- Прекрасная работа, генерал Хакс, - ещё никогда его звание не звучало так сладко, так подчеркнуто-заслуженно, как сейчас. Темная леди умела карать и хвалить, сегодня Армитажу досталось последнее, а Трауну… Трауну то, что осталось.
+<br>Она даже не стала поправлять его о гарантиях безопасности, в конце концов, он мог отвечать за своих людей. К коим Люмия не относилась. Сама женщина намеревалась разнообразить свой вечер очень личной беседой с чиссом… очень личное, настолько личной, насколько позволяла кибернетическая рука, сжимавшая ваши внутренности и пытающаяся выломать вам поясничные позвонки через брюшную полость.
+
+  </div>
+</div>
+
+<!-- AJAX для подгрузки баннеров -->
+<script>
+$(function() {
+    $('.js-bestfriends-button').one('click', function(event) {
+        $('.bestfriends .inner').load('/pages/banners #retrobanners');
+    }).click(function(event) {
+        event.preventDefault();
+        $(this).mouseover(function() {
+            $(this).animate({'color': '#7f807a'}, 500);
+        }).mouseleave(function() {
+            $(this).animate({'color': '#ab1c51'}, 500);
+        });
+        if ( $('.bestfriends .inner').css('opacity') == '0' ) {
+            $('.bestfriends .inner').animate({'z-index': '5'}, 200, function() {
+                $(this).animate({opacity: '1'}, 500);
+            });
+            $(this).text('Закрыть');
+        } else {
+            $('.bestfriends .inner').animate({opacity: '0'}, 500, function() {
+                $(this).css('z-index', '-1');
+            });
+            $(this).text('Баннеры');
+        }
+    });
+});
+</script>

@@ -1,0 +1,398 @@
+<!-- DISCLAIMER:
+I know most of this stuff should be in backend, but the platform does not allow it either.
+So, I had to be creative!
+Please note this work is almost two years old as of March 2017. No judgement.
+
+p.s. Comments are in Russian. Text is in Russian. Sorry about that. -->
+
+<script>
+/* ВСТАВКА МУЗЫКИ И ПЛЕЙЛИСТОВ С PLEER.NET (ч.2 - кнопка в поле ответа), версия 3.0, автор muirelynn */
+$('td#button-code').after('<td id="button-audio" title="Музыка в посте"><img src="/i/blank.gif"></td>'); /* Функция на кнопке */
+$('td#button-audio').click(function (event) {
+    if (event.ctrlKey || event.altKey) {
+        bbcode('[audio]', '[/audio]');
+    } else {
+        var audioMusicURL = prompt('Вставьте ссылку на трек или плейлист с сайта pleer.net', 'http://');
+        if (audioMusicURL === null) {
+            return;
+        } else if (!audioMusicURL || audioMusicURL === 'http://') {
+            alert('Вы не вставили ссылку!');
+        } else {
+            insert('[audio]' + audioMusicURL + '[/audio]');
+        }
+    }
+});
+/* ВСТАВКА КОУБА */
+$('td#button-smile').before('<td id="button-coub" title="Coub в посте"><img src="/i/blank.gif"></td>');
+$('td#button-coub').find('img').click( function(event) {
+    if ( event.ctrlKey || event.altKey) {
+        insert('[coub][/coub]');
+    } else {
+        var coubURL = prompt('Вставьте ссылку на coub', 'http://');
+        if (coubURL === null || coubURL === 'http://') {
+               return;
+        } else if ( !coubURL ) {
+            alert('Вы не вставили ссылку!');
+            return false;
+        } else {
+            insert('[coub]' + coubURL + '[/coub]');
+        }
+    }
+});
+</script>
+
+<!-- Копирайт -->
+<div class="copyright">
+© <a href="#">Retrocross</a>, 2016. Дизайн — анонимный алексей, верстка — <a href="http://urchoice.rolka.su/profile.php?id=4789">грандоченька смерти</a>.
+</div>
+
+<!-- Скрипты HTML-низа -->
+<!-- Расширенная функция переноса сообщений V.2 © Alex_63 -->
+<script type="text/javascript" src="http://mybb.forum4.ru/files/0015/c4/3f/61583.js"></script>
+
+<script>
+$(function() {
+    /* КЛИКАБЕЛЬНЫЕ НИКИ ГОСТЕЙ */
+    var guestForum = 'Script Outline';
+    if ( $('#pun-viewtopic').length > 0 && $('#pun-crumbs1').find('a:nth-of-type(2)').text() === guestForum ) {
+        $('.post-author').find('.pa-author').each(function() {
+            if ( !$(this).find('a').length ) {
+               $(this).html( $(this).html().replace(/(<span class=\"acchide\">Автор\:&nbsp;<\/span>)(.*)/ig, '$1<a href=\"javascript:to\(\'$2\'\)\" rel=\"nofollow\">$2<\/a>') );
+           }
+        });
+    } /* Конец скрипта */
+});
+</script>
+
+<script>
+$(function() {
+   /* ДЕФОЛТНАЯ АВАТАРКА */
+   $('#pun-viewtopic, #pun-messages').find('.post-author').each(function () {
+       if ( !($(this).find('.pa-avatar.item2').length > 0) ) {
+            $(this).find('.pa-author').before(function () {
+                return '<li class="pa-avatar item2"><img title="guest icon" class="guest icon" src="http://co.forum4.ru/files/0017/3c/7c/37303.png"></li>';
+            });
+       }
+   }); /* Конец скрипта */
+});
+</script>
+
+<script>
+$(function() {
+   /* УДАЛЕНИЕ ДОПОЛНИТЕЛЬНЫХ ПОЛЕЙ ПРОФИЛЯ */
+   $('.post-author').find('li').each(function() {
+      var delNameOf = [1, 3];
+      for (var i = 0; i != delNameOf.length; i++) {
+         if ($(this).hasClass('pa-fld' + delNameOf[i])) {
+            $(this).html($(this).html().replace(/^.*?\: /i, ''));
+         }
+      }
+   }); /* Конец скрипта */
+});
+</script>
+
+<script>
+$(function() {
+   $('.post-content').find('p').each(function() {
+   /* МАСКА ПРОФИЛЯ, ЧАСТЬ 1 */
+      $(this).html( $(this).html().replace(/\[(icon|sign|nick|status)\]((?:[^\[])+)\[\/(?:icon|sign|nick|status)\]/igm, '<span class="changeMask $1">$2<\/span>')); /* Смена аватара, никнейма, статуса и подписи */
+      $('.changeMask.icon, .changeMask.sign, .changeMask.status, .changeMask.nick').hide(); /* Удалить потом */
+
+   }); /* Конец скриптов */
+
+   /* ИНИЦИАЛИЗАЦИЯ МАСКИ */
+   profileMasking();
+});
+</script>
+
+<script>
+$(function() {
+   /* ПОДСЧЕТ СИМВОЛОВ В ФОРМЕ ОТВЕТА */
+   if ($('textarea#main-reply').length > 0) {
+      $('p.areafield.required').after('<div id="charcounter">Символов в сообщении: <span class="charcount">0</span></div>');
+      var lastValue = '';
+      setInterval(function() {
+         if ($('#main-reply').val().length != lastValue) {
+            lastValue = $('#main-reply').val().length;
+            $('.charcount').text(lastValue);
+         }
+      }, 100);
+   } /* Конец скрипта */
+});
+</script>
+
+<script>
+$(function() {
+   /* ВЫДЕЛЕНИЕ КОДА ПО КЛИКУ, с сайта max22.ru */
+   $('.code-box').find('pre').click(function() {
+      var rng, sel;
+      if (document.createRange) {
+         rng = document.createRange();
+         rng.selectNode(this);
+         sel = window.getSelection();
+         var strSel = '' + sel;
+         if (!strSel.length) {
+            sel.removeAllRanges();
+            sel.addRange(rng);
+         }
+      } else {
+         var rng = document.body.createTextRange();
+         rng.moveToElementText(this);
+         rng.select();
+      }
+   });
+   $('.code-box').find('.legend').html('Кликните по коду ниже, чтобы его выделить:'); 
+}); /* Конец скрипта */
+</script>
+
+<script>
+$(function() {
+   /* НАСТРОЙКА КНОПОК В ФОРМЕ ОТВЕТА */
+   $('td#button-link, td#button-hide, td#button-image, td#button-video').find('img').removeAttr('onclick').click(function(event) {
+      var thisID = $(this).parent().attr('id').toString().toLowerCase().replace(/^button-(.*)/g, '$1');
+      if (event.ctrlKey || event.altKey) {
+         if ( thisID == 'image' ) {
+             bbcode('[img]', '[/img]');
+         } else if ( thisID == 'link' ) {
+             bbcode('[url=""]', '[/url]');
+         } else {
+             bbcode('[' + thisID + ']', '[/' + thisID + ']');
+         }
+      } else {
+         FORUM.get('editor.' + thisID + '.onclick()');
+      }
+   }); /* Конец скрипта */
+});
+</script>
+
+
+
+<script>
+/* СНАЧАЛА ОРИГИНАЛ ЗАГРУЖЕННОГО ИЗОБРАЖЕНИЯ */
+$('#image-area-tcon-computer').find('img[src$="/js/uploadify/upload.png"]').click(function () {
+    var IntervalId0;
+    function TstImgselected() {
+        var a = $('#post #image-area-tcon-computer').find('#selected-insert-format');
+        if (a.length == 1) {
+            a.find('option').removeAttr('selected');
+            a.find('option[value="source"]').attr('selected', 'selected');
+            clearInterval(IntervalId0);
+            return true;
+        }
+    }
+    IntervalId0 = setInterval(TstImgselected, 100);
+});
+</script>
+
+<script>
+$(function() {
+   /* ЗАПРЕТ НА РЕДАКТИРОВАНИЕ РЕКЛАМНОГО ПРОФИЛЯ */
+    if ( $('#pun-profile').length > 0 && (UserID == 3) ) {
+        $('input[type="submit"]').attr('disabled', true);
+        $('.formsubmit').html( $('.formsubmit').html().replace(/После обновления профиля, вы будете перенаправлены назад на эту страницу./, '<span style="color: rgba(142,35,35, 1);">Изменение профилей неигровых аккаунтов запрещено!</span>') );
+    }/* Конец скрипта */
+});
+</script>
+
+<script>
+/* ЗАМЕНА АВАТАРА И МАСКА ПРОФИЛЯ, ОСНОВНАЯ ЧАСТЬ */
+var profileMasking = function() {
+  var forumCheck = $('#pun-crumbs1').find('a:nth-of-type(2)').text(),
+    profileMask = ['Writers\' Room', 'Main Cast & Crew', 'Table Reads', 'Sketch! Camera! Action!', 'B-Roll Footage', 'Pick-Ups & Re-Shoots', 'Final Cut', 'Wrap Party', 'Off the Set', 'Deleted Scenes', 'STAR WARS', 'WARCRAFT'],
+    profileMaskFull = ['Writers\' Room', 'Sketch! Camera! Action!', 'B-Roll Footage', 'Pick-Ups & Re-Shoots', 'Final Cut', 'Deleted Scenes', 'STAR WARS', 'WARCRAFT'],
+    viewtopic = /http\:\/\/(?:.*)viewtopic.php\?id\=((?:[^\&|\#| ])+).*/gi;
+
+  if ($('#pun-viewtopic, #pun-edit, #pun-post').length > 0) {
+    for (var maskIndex = 0, profileMaskLen = profileMask.length; profileMaskLen > maskIndex; ++maskIndex) {
+      if (forumCheck === profileMask[maskIndex]) {
+        $('td#button-addition').after('<td id="button-changeProfile" title="Маска профиля для поста"><img src="/i/blank.gif"></td>');
+        $('#form-buttons').after('<div class="container" id="changeProfile-area" style="width: 430px;"><div class="chIcon"> <span>Ссылка на аватар:</span> <span class="input"><input type="text" id="chIcon-text" placeholder="http://"></span> </div><div class="maskButtons"> <span class="chOkay"><a>ОК, готово!</a></span>&nbsp;&nbsp;&nbsp;<span><a onclick="$(\'#changeProfile-area\').find(\'input, textarea\').val(\'\');">Очистить всё</a></span>&nbsp;&nbsp;&nbsp;<span><a onclick="$(\'#changeProfile-area\').hide(); return false;">Закрыть окно</a></span> </div></div>');
+        if ($('#pun-viewtopic, #pun-edit').length > 0) {
+          letsChangeIcon();
+        }
+        for (var maskFullIndex = 0, maskFullLen = profileMaskFull.length; maskFullLen > maskFullIndex; ++maskFullIndex) {
+          if (forumCheck === profileMaskFull[maskFullIndex]) {
+            letsChangeStuff();
+            if (!($('#changeProfile-area').find('.maskWrapper').length)) {
+              maskMenuFull();
+            }
+          }
+          var topicType = location.href.toString().replace(/http\:\/\/(?:.*)\/(.*)/gi, '$1'),
+            topicID,
+            storedIcon = 'topic' + topicID + 'icon',
+            storedNick = 'topic' + topicID + 'nick',
+            storedStatus = 'topic' + topicID + 'status',
+            storedSign = 'topic' + topicID + 'sign';
+          if ($('#changeProfile-area').length > 0) {
+            if ((/viewtopic|post.php?tid/gi).test(topicType)) {
+              topicID = location.href.toString().replace(viewtopic, '$1');
+              loadLocalStor(storedIcon, storedNick, storedStatus, storedSign);
+            } else if ((/edit/gi).test(topicType)) {
+              topicID = $('#pun-crumbs1').find('a:nth-of-type(3)').attr('href').replace(viewtopic, '$1');
+              loadLocalStor(storedIcon, storedNick, storedStatus, storedSign);
+            }
+          }
+        }
+        $('.post-content').find('.changeMask').empty();
+        break;
+      }
+    }
+  }
+
+  function maskMenuFull() {
+    var nickVal = '<div class="chNick"> <span>Никнейм:</span> <span class="input"><input type="text" id="chNick-text" placeholder="Name Surname" maxlength="25"></span></div>',
+      statusVal = '<div class="chStatus"> <span>Статус:</span> <span class="input"><input type="text" id="chStatus-text" placeholder="Текст статуса" maxlength="50"></span> </div>',
+      signVal = '<div class="chSign"> <span>Подпись:<br><i class="small-text">(Работают все BB-коды, кроме кодов таблицы.)</i></span> <div class="resizable-textarea"><textarea id="chSign-text" rows="3" class="processed"></textarea></div></div>';
+    $('#changeProfile-area').find('.chIcon').after('<div class="maskWrapper-button"><span>Добавить маску</span> </div><div class="maskWrapper" style="display: none;">' + nickVal + statusVal + signVal + '</div>');
+    $('#changeProfile-area').find('.chOkay').after('&nbsp;&nbsp;&nbsp;<span class="chBBcode"><a onclick="insert(\'[icon][/icon][nick][/nick][status][/status][sign][/sign]\')">Вставить BB-код маски</a></span>');
+  }
+
+  function loadLocalStor(icon, nick, status, sign) {
+    $('#changeProfile-area').find('#chIcon-text').val(localStorage.icon);
+    $('#changeProfile-area').find('#chNick-text').val(localStorage.nick);
+    $('#changeProfile-area').find('#chStatus-text').val(localStorage.status);
+    $('#changeProfile-area').find('#chSign-text').val(localStorage.sign);
+  }
+
+  function letsChangeIcon() {
+    $('.post-content').find('.changeMask').each(function() {
+      var post = $(this).closest('.post'),
+        postAuthor = post.find('.post-author'),
+        postAuthorNick = postAuthor.find('.pa-author a').html();
+      if (post.find('.changeMask.icon').length > 0) {
+        if (postAuthor.find('.pa-avatar.item2').length > 0) {
+          postAuthor.find('.pa-avatar.item2').html('<img title="changed icon"  class="changed icon" src="' + post.find('.changeMask.icon').text() + '">');
+        } else {
+          postAuthor.find('.pa-author').before('<li class="pa-avatar item2"><img title="changed icon" class="changed icon" src="' + post.find('.changeMask.icon').text() + '"></li>');
+        }
+      }
+    });
+  }
+
+  function letsChangeStuff() {
+    $('.post-content').find('.changeMask').each(function() {
+      var $change = $(this);
+      letsChangeEverything($change);
+    });
+  }
+
+  function letsChangeEverything($changer) {
+    var post = $changer.closest('.post'),
+      postAuthor = post.find('.post-author');
+    if (post.find('.changeMask.sign').length > 0) {
+      if (post.find('.post-sig').length > 0) {
+        post.find('.post-sig').find('dd').html('<p>' + post.find('.changeMask.sign').html() + '</p>');
+      } else {
+        post.find('.post-content').after('<dl class="post-sig"><dt></dt><dd><p>' + post.find('.changeMask.sign').html() + '</p></dd></dl>');
+      }
+      post.find('.changeMask.sign').find('img').attr('class', 'sigimage');
+    }
+    if (post.find('.changeMask.status').length > 0) {
+      postAuthor.find('.pa-title').html(post.find('.changeMask.status').html());
+    }
+    if (post.find('.changeMask.nick').length > 0) {
+      postAuthor.find('.pa-author a').html(post.find('.changeMask.nick').html());
+      postAuthor.find('.pa-fld1 div').first().addClass('masked-char').hide();
+      postAuthor.find('.pa-fld2, .pa-fld3').hide();
+    }
+  }
+
+  $('<span class="masked-char-button">Персонаж под маской</span>').insertBefore('.masked-char');
+  $('.masked-char-button').attr('cursor', 'pointer').click( function() {
+    $(this).siblings('.masked-char').slideToggle('slow');
+  });
+
+  $('td#button-changeProfile').click(function(event) {
+    if (event.ctrlKey || event.altKey) {
+      bbcode('[icon]', '[/icon]');
+    } else {
+      $('#changeProfile-area').toggle();
+    }
+  });
+
+  $('#changeProfile-area').find('.maskWrapper-button span').click(function() {
+    var $maskWrapper = $('#changeProfile-area').find('.maskWrapper');
+    $maskWrapper.toggle();
+    if ($maskWrapper.css('display') == 'block') {
+      $(this).text('Закрыть поле редактирования маски');
+    } else {
+      $(this).text('Добавить маску');
+    }
+  });
+
+  $('#changeProfile-area').find('.chOkay').click(function() {
+    $('#changeProfile-area').find('input, textarea').each(function() {
+      var classID = $(this).attr('id'),
+        classCode = classID.toString().toLowerCase().replace(/^ch(.*)-text/g, '$1'),
+        whatChanges = $(this).val(),
+        viewtopic = /http\:\/\/(?:.*)viewtopic.php\?id\=((?:[^\&|\#| ])+).*/gi;
+
+      var topicType = location.href.toString().replace(/http\:\/\/(?:.*)\/(.*)/gi, '$1'),
+        topicID = location.href.toString().replace(viewtopic, '$1'),
+        storeKey = 'topic' + topicID + classCode;
+
+      if ((/viewtopic|post.php?tid/gi).test(topicType)) {
+        localStorage.removeItem(storeKey);
+      } else if ((/edit/gi).test(topicType)) {
+        var storeEditKey = 'topic' + $('#pun-crumbs1').find('a:nth-of-type(3)').attr('href').replace(viewtopic, '$1') + classCode;
+        localStorage.removeItem(storeEditKey);
+      }
+
+      if (whatChanges.length > 0) {
+        if (classID == 'chIcon-text') {
+          if (!(/\.(gif|jpg|jpeg|png|gif\?dl\=0|jpg\?dl\=0|jpeg\?dl\=0|png\?dl\=0|gif\?dl\=1|jpg\?dl\=1|jpeg\?dl\=1|png\?dl\=1)$/i).test(whatChanges)) {
+            alert('Вы вставили ссылку не на картинку!');
+          } else {
+            insert('[' + classCode + ']' + whatChanges + '[/' + classCode + ']');
+          }
+        } else {
+          insert('[' + classCode + ']' + whatChanges + '[/' + classCode + ']');
+        }
+
+        if ((/viewtopic|post.php?tid/gi).test(topicType)) {
+          localStorage.setItem(storeKey, whatChanges);
+        } else if ((/edit/gi).test(topicType)) {
+          localStorage.setItem(storeEditKey, whatChanges);
+        }
+
+      }
+      $('#changeProfile-area').toggle();
+    });
+  });
+
+  $('#changeProfile-area').find('input, textarea').each(function() {
+    $(this).parent().siblings('span').click(function(e) {
+      var classCode = $(this).siblings().find('input, textarea').attr('id').toString().toLowerCase().replace(/^ch(.*)-text/g, '$1');
+      if (e.ctrlKey || e.altKey) {
+        bbcode('[' + classCode + ']', '[/' + classCode + ']');
+      } else {
+        return false;
+      }
+    });
+  });
+};
+</script>
+
+<script>
+/* ПИАР-КНОПКА */
+$(function () {
+    $('#navlogin').after('<li id="navadv"><a>PR</a></li>');
+    $('#pun-navlinks').append('<div id=\"PR_loginDiv\" style=\"display:none;\">\ <form id=\"form_login\" name=\"login\" method=\"post\" action=\"/login.php?action=in\" onsubmit=\"return check_form()\">\ <fieldset>\ <input type=\"hidden\" name=\"form_sent\" value=\"1\"/>\ <input type=\"text\" id=\"fld1\" name=\"req_username\" size=\"21\" maxlength=\"25\"/>\ <input type=\"text\" id=\"fld2\" name=\"req_password\" size=\"7\" maxlength=\"16\"/>\ <input type=\"submit\" class=\"button\" name=\"login\"/>\ </fieldset>\ </form>\ </div>');
+    $('#navadv').click(function () {
+        var PiarNik = 'Commercial Break',
+              PiarPass = '0000PR';
+        $("#PR_loginDiv #fld1").val(PiarNik);
+        $("#PR_loginDiv #fld2").val(PiarPass);
+        $("#PR_loginDiv input[type='submit']").click();
+    });
+});
+</script>
+
+<script>
+/* ЗАМЕНА МЕССЕДЖЕЙ */
+if ( ($('#navpm').length > 0) && ($('#navpm').find('span').html() !== 'Сообщения') ) { 
+    $('#navpm span').html(
+        $('#navpm span').html().replace(/Сообщения\&nbsp\;\((.*)?\)/i, '$1')
+    ).addClass('newmess').show();
+}
+</script>

@@ -1,0 +1,53 @@
+<!-- DISCLAIMER:
+I know most of this stuff should be in backend, but the platform does not allow it either.
+So, I had to be creative!
+Please note this work is almost two years old as of March 2017. No judgement.
+
+p.s. Comments are in Russian. Text is in Russian. Sorry about that. -->
+
+<style type="text/css">
+.scrollarrows {position: fixed; right: 2.5%; bottom: 45%;}
+.scrollarrows div{width:33px;height:48px;background:url(http://co.forum4.ru/files/0017/3c/7c/59691.png) 50% 50% no-repeat;}
+.scrollarrows a:first-of-type div {margin-bottom: 0.1em;}
+.scrollarrows a:last-of-type div {background-image:url(http://co.forum4.ru/files/0017/3c/7c/49207.png);margin-top: 0.1em;}
+</style>
+
+<!-- Запрет перехода на первую страницу при удалении тем и сообщений -->
+<script type="text/javascript" src="http://mybb.forum4.ru/files/0010/b4/f8/33839.js"></script>
+
+<script>
+$('head').prepend('<meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett">'); /* A Tribute to Sir Terry */
+/* Отключение некоторых функций rusff */
+RusffCore.sets.rusff_smilepack = 0; /*Сервисные смайлы*/
+RusffCore.sets.use_awards = 0; /*Награды*/
+RusffCore.sets.files.button = false; /*Вложения*/
+RusffCore.sets.share = false; /*Поделиться*/
+RusffCore.sets.tags = false; /*Теги*/
+RusffCore.sets.graffiti = false; /*Теги*/
+</script>
+
+<!-- СТРЕЛОЧКИ ВВЕРХ-ВНИЗ -->
+<div class="scrollarrows">
+    <a href="#top" onclick="$('body, html').animate({scrollTop: 0}, '400'); return false;" title="Вверх страницы"><div></div></a>
+    <a href="#bottom" onclick="$('body, html').animate({scrollTop: $(document).height()-$(window).height()}, '400'); return false;" title="Вниз страницы"><div></div></a>
+</div>
+
+
+<!-- КУСОК ТАБЛИЦЫ С НАВИГАЦИЕЙ -->
+<div class="gamenav">
+
+<div class="admins">
+<a href="http://retrocross.rusff.ru/profile.php?id=76" class="harley"><span>James</span> Howlett</a>
+<a href="http://retrocross.rusff.ru/profile.php?id=136" class="maiev">Buffy  <span>Summers</span></a>
+<a href="http://retrocross.rusff.ru/profile.php?id=14" class="piper"><span>Jaina </span> Solo Fel</a>
+</div>
+
+<div class="linksnav">
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=9">Шаблон визитки</a>
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=14">Гостевая</a>
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=5">Правила</a>
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=6">ЧаВо</a>
+<a href="http://retrocross.rusff.ru/viewtopic.php?id=8">Роли</a>
+</div>
+
+</div>
